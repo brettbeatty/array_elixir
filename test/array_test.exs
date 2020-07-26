@@ -2,6 +2,52 @@ defmodule ArrayTest do
   use ExUnit.Case, async: true
   doctest Array
 
+  describe "Array.fetch/2" do
+    test "fetches an element by its index" do
+      array = Array.new([:a, :b, :c])
+
+      assert Array.fetch(array, 1) == {:ok, :b}
+    end
+
+    test "negative indices count from end of array" do
+      array = Array.new([:a, :b, :c])
+
+      assert Array.fetch(array, -1) == {:ok, :c}
+    end
+
+    test "raises ArgumentError for non-integer indices" do
+      array = Array.new([:a, :b, :c])
+
+      assert_raise ArgumentError, "array indices must be integers, got: 1.0", fn ->
+        Array.fetch(array, 1.0)
+      end
+    end
+
+    test "index (-size - 1) is out of bounds" do
+      array = Array.new([:a, :b, :c])
+
+      assert Array.fetch(array, -4) == :error
+    end
+
+    test "index (-size) is in bounds" do
+      array = Array.new([:a, :b, :c])
+
+      assert Array.fetch(array, -3) == {:ok, :a}
+    end
+
+    test "index (size - 1) is in bounds" do
+      array = Array.new([:a, :b, :c])
+
+      assert Array.fetch(array, 2) == {:ok, :c}
+    end
+
+    test "index (size) is out of bounds" do
+      array = Array.new([:a, :b, :c])
+
+      assert Array.fetch(array, 3) == :error
+    end
+  end
+
   describe "Array.new/0" do
     test "creates an empty array" do
       array = Array.new()

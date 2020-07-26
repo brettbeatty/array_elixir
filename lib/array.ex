@@ -29,6 +29,54 @@ defmodule Array do
   end
 
   @doc """
+  Fetches an element from an array by its index.
+
+  Array indices are integers. Fetching an index greater than or equal to the
+  array's size or less than the size negative will return `:error`. Negative
+  indices count from the end of the array.
+
+  ## Examples
+
+      iex> array = Array.new([:a, :b, :c])
+      iex> Array.fetch(array, 2)
+      {:ok, :c}
+
+      iex> array = Array.new([:a, :b, :c])
+      iex> Array.fetch(array, 3)
+      :error
+
+  """
+  @spec fetch(t(element), integer()) :: {:ok, element} | :error when element: var
+  def fetch(array, index) do
+    case normalize_index(array, index) do
+      {:ok, index} ->
+        {:ok, elem(array.elements, element_position(array, index))}
+
+      :error ->
+        :error
+    end
+  end
+
+  @spec normalize_index(t(), integer()) :: {:ok, non_neg_integer()} | :error
+  defp normalize_index(array, index)
+
+  defp normalize_index(_array, index) when not is_integer(index) do
+    raise ArgumentError, "array indices must be integers, got: #{inspect(index)}"
+  end
+
+  defp normalize_index(%{size: size}, index) when index >= -size and index < 0 do
+    {:ok, index + size}
+  end
+
+  defp normalize_index(%{size: size}, index) when index >= 0 and index < size do
+    {:ok, index}
+  end
+
+  defp normalize_index(_array, _index) do
+    :error
+  end
+
+  @doc """
   Creates an empty array.
 
   ## Examples
