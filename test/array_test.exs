@@ -40,6 +40,14 @@ defmodule ArrayTest do
     end
   end
 
+  describe "Array.to_list/1" do
+    test "converts an array to a list of its elements" do
+      array = Array.new([:a, :b, :c])
+
+      assert Array.to_list(array) == [:a, :b, :c]
+    end
+  end
+
   describe "Collectable" do
     test "collects elements into an array" do
       array = %Array{elements: {nil, nil, nil, :a}, size: 1, start: 3}

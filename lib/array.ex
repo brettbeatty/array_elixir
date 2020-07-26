@@ -102,6 +102,21 @@ defmodule Array do
     {element, new_array}
   end
 
+  @doc """
+  Converts an array to a list of its elements.
+
+  ## Examples
+
+      iex> array = Array.new([:a, :b, :c])
+      iex> Array.to_list(array)
+      [:a, :b, :c]
+
+  """
+  @spec to_list(t(element)) :: [element] when element: var
+  def to_list(array) do
+    Enum.to_list(array)
+  end
+
   defimpl Collectable do
     @impl Collectable
     def into(array) do
