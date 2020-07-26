@@ -73,4 +73,12 @@ defmodule ArrayTest do
       assert Enum.count(array) == 3
     end
   end
+
+  describe "Inspect" do
+    test "looks like an array, not a struct" do
+      array = Array.new([:a, :b, :c])
+
+      assert inspect(array) == "#Array<[:a, :b, :c]>"
+    end
+  end
 end

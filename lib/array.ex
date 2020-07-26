@@ -172,4 +172,13 @@ defmodule Array do
       {:error, __MODULE__}
     end
   end
+
+  defimpl Inspect do
+    import Inspect.Algebra, only: [concat: 1, to_doc: 2]
+
+    @impl Inspect
+    def inspect(array, opts) do
+      concat(["#Array<", to_doc(Array.to_list(array), opts), ">"])
+    end
+  end
 end
