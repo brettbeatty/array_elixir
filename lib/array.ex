@@ -172,6 +172,22 @@ defmodule Array do
   end
 
   @doc """
+  Pops an element from an array by its index.
+
+  ## Examples
+
+      iex> array = Array.new([:a, :b, :c])
+      iex> {:b, new_array} = Array.pop(array, 1)
+      iex> new_array
+      #Array<[:a, :c]>
+
+  """
+  @spec pop(t(element), integer()) :: {element | nil, t(element)} when element: var
+  def pop(array, index) do
+    {array[index], delete(array, index)}
+  end
+
+  @doc """
   Appends an element to an array.
 
   ## Examples

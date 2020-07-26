@@ -137,6 +137,36 @@ defmodule ArrayTest do
     end
   end
 
+  describe "Array.pop/2" do
+    test "pops an element from an array by its index" do
+      array = Array.new(?a..?e)
+
+      assert {?b, new_array} = Array.pop(array, 1)
+      assert Array.to_list(new_array) == 'acde'
+    end
+
+    test "allows popping by a negative index" do
+      array = Array.new(?a..?e)
+
+      assert {?d, new_array} = Array.pop(array, -2)
+      assert Array.to_list(new_array) == 'abce'
+    end
+
+    test "returns {nil, array} when index is out of bounds" do
+      array = Array.new(?a..?e)
+
+      assert Array.pop(array, 5) == {nil, array}
+    end
+
+    test "raises ArgumentError for non-integer indices" do
+      array = Array.new(?a..?e)
+
+      assert_raise ArgumentError, "array indices must be integers, got: []", fn ->
+        Array.pop(array, [])
+      end
+    end
+  end
+
   describe "Array.push/2" do
     test "appends an element to an array" do
       array =
