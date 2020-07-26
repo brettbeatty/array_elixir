@@ -56,4 +56,22 @@ defmodule Array do
         remainder + capacity
     end
   end
+
+  defimpl Collectable do
+    @impl Collectable
+    def into(array) do
+      {array, &collect/2}
+    end
+
+    @spec collect(Array.t(element), Collectable.command()) :: Array.t(element) when element: var
+    defp collect(array, command)
+
+    defp collect(array, {:cont, element}) do
+      Array.push(array, element)
+    end
+
+    defp collect(array, command) when command in [:done, :halt] do
+      array
+    end
+  end
 end

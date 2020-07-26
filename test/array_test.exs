@@ -15,4 +15,13 @@ defmodule ArrayTest do
       assert Array.push(array, :c) == expected
     end
   end
+
+  describe "Collectable" do
+    test "collects elements into an array" do
+      array = %Array{elements: {nil, nil, nil, :a}, size: 1, start: 3}
+      expected = %Array{elements: {:b, :c, nil, :a}, size: 3, start: 3}
+
+      assert Enum.into([:b, :c], array) == expected
+    end
+  end
 end
