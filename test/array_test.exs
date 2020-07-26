@@ -121,6 +121,36 @@ defmodule ArrayTest do
     end
   end
 
+  describe "Array.get_and_update/3" do
+    test "allows getting and updating a value" do
+      array = Array.new([:a, :d, :c])
+
+      assert {"d", new_array} = Array.get_and_update(array, 1, &{to_string(&1), :b})
+      assert Array.to_list(new_array) == [:a, :b, :c]
+    end
+
+    test "allows popping a value" do
+      array = Array.new([:a, :b, :c])
+
+      assert {:c, new_array} = Array.get_and_update(array, -1, fn _element -> :pop end)
+      assert Array.to_list(new_array) == [:a, :b]
+    end
+
+    test "does not update array when index is out of bounds" do
+      array = Array.new([:a, :b, :c])
+
+      assert Array.get_and_update(array, 3, &{to_string(&1), :d}) == {"", array}
+    end
+
+    test "raises ArgumentError for non-integer indices" do
+      array = Array.new([:a, :b, :c])
+
+      assert_raise ArgumentError, "array indices must be integers, got: {}", fn ->
+        Array.get_and_update(array, {}, &{inspect(&1), :d})
+      end
+    end
+  end
+
   describe "Array.new/0" do
     test "creates an empty array" do
       array = Array.new()

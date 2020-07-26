@@ -135,6 +135,32 @@ defmodule Array do
   end
 
   @doc """
+  Gets and updates elements in an array by index.
+
+  See `c:Access.get_and_update/3`.
+
+  ## Examples
+
+      iex> array = Array.new([:a, :d, :c])
+      iex> {"d", new_array} = Array.get_and_update(array, 1, &{to_string(&1), :b})
+      iex> new_array
+      #Array<[:a, :b, :c]>
+
+  """
+  @spec get_and_update(t(element), integer(), (element | nil -> {value, element} | :pop)) ::
+          {value, t(element)}
+        when element: var, value: var
+  def get_and_update(array, index, fun) do
+    case fun.(array[index]) do
+      {value, element} ->
+        {value, put(array, index, element)}
+
+      :pop ->
+        pop(array, index)
+    end
+  end
+
+  @doc """
   Creates an empty array.
 
   ## Examples
