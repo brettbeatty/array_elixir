@@ -24,6 +24,22 @@ defmodule ArrayTest do
     end
   end
 
+  describe "Array.shift/1" do
+    test "removes the first element from an array" do
+      array = Array.new([:a, :b, :c])
+      expected = %{array | start: 1, size: 2}
+
+      assert {:a, new_array} = Array.shift(array)
+      assert new_array == expected
+    end
+
+    test "returns :error if array is empty" do
+      array = Array.new()
+
+      assert Array.shift(array) == :error
+    end
+  end
+
   describe "Collectable" do
     test "collects elements into an array" do
       array = %Array{elements: {nil, nil, nil, :a}, size: 1, start: 3}

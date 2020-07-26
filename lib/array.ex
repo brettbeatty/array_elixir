@@ -13,6 +13,19 @@ defmodule Array do
 
   defstruct elements: :erlang.make_tuple(8, nil), size: 0, start: 0
 
+  @spec element_position(t(), integer()) :: non_neg_integer()
+  defp element_position(array, index) do
+    capacity = tuple_size(array.elements)
+
+    case rem(array.start + index, capacity) do
+      remainder when remainder >= 0 ->
+        remainder
+
+      remainder ->
+        remainder + capacity
+    end
+  end
+
   @doc """
   Creates an empty array.
 
@@ -58,17 +71,35 @@ defmodule Array do
     %{array | elements: put_elem(array.elements, position, element), size: array.size + 1}
   end
 
-  @spec element_position(t(), integer()) :: non_neg_integer()
-  defp element_position(array, index) do
-    capacity = tuple_size(array.elements)
+  @doc """
+  Removes the first element from an array.
 
-    case rem(array.start + index, capacity) do
-      remainder when remainder >= 0 ->
-        remainder
+  Returns :error if array is empty.
 
-      remainder ->
-        remainder + capacity
-    end
+  ## Examples
+
+      iex> array = Array.new([:a, :b, :c])
+      iex> {:a, new_array} = Array.shift(array)
+      iex> new_array
+      #Array<[:b, :c]>
+
+      iex> array = Array.new()
+      iex> Array.shift(array)
+      :error
+
+  """
+  @spec shift(t(element)) :: {element, t(element)} | :error when element: var
+  def shift(array)
+
+  def shift(%{size: 0}) do
+    :error
+  end
+
+  def shift(array) do
+    element = elem(array.elements, array.start)
+    new_array = %{array | size: array.size - 1, start: element_position(array, 1)}
+
+    {element, new_array}
   end
 
   defimpl Collectable do
