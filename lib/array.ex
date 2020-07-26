@@ -28,6 +28,20 @@ defmodule Array do
   end
 
   @doc """
+  Creates an array from an enumerable.
+
+  ## Examples
+
+      iex> Array.new([:a, :b, :c])
+      #Array<[:a, :b, :c]>
+
+  """
+  @spec new(Enumerable.t()) :: t()
+  def new(enumerable) do
+    Enum.into(enumerable, new())
+  end
+
+  @doc """
   Appends an element to an array.
 
   ## Examples

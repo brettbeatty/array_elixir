@@ -7,6 +7,14 @@ defmodule ArrayTest do
     end
   end
 
+  describe "Array.new/1" do
+    test "creates an array from an enumerable" do
+      expected = %Array{elements: {:a, :b, :c, nil, nil, nil, nil, nil}, size: 3, start: 0}
+
+      assert Array.new([:a, :b, :c]) == expected
+    end
+  end
+
   describe "Array.push/2" do
     test "appends an element to an array" do
       array = %Array{elements: {nil, nil, :a, :b}, size: 2, start: 2}
