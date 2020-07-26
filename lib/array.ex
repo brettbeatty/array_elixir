@@ -4,6 +4,8 @@ defmodule Array do
 
   This module is meant as a learning exercise, not an optimized data structure.
   """
+  @behaviour Access
+
   @type t() :: t(any())
   @type t(_element) :: %__MODULE__{
           elements: tuple(),
@@ -104,6 +106,7 @@ defmodule Array do
       :error
 
   """
+  @impl Access
   @spec fetch(t(element), integer()) :: {:ok, element} | :error when element: var
   def fetch(array, index) do
     case normalize_index(array, index) do
@@ -147,6 +150,7 @@ defmodule Array do
       #Array<[:a, :b, :c]>
 
   """
+  @impl Access
   @spec get_and_update(t(element), integer(), (element | nil -> {value, element} | :pop)) ::
           {value, t(element)}
         when element: var, value: var
@@ -208,6 +212,7 @@ defmodule Array do
       #Array<[:a, :c]>
 
   """
+  @impl Access
   @spec pop(t(element), integer()) :: {element | nil, t(element)} when element: var
   def pop(array, index) do
     {array[index], delete(array, index)}
