@@ -11,7 +11,9 @@ defmodule Array do
           start: non_neg_integer()
         }
 
-  defstruct elements: :erlang.make_tuple(8, nil), size: 0, start: 0
+  @initial_capacity 8
+
+  defstruct ~W[elements size start]a
 
   @spec element_position(t(), integer()) :: non_neg_integer()
   defp element_position(array, index) do
@@ -37,7 +39,16 @@ defmodule Array do
   """
   @spec new() :: t()
   def new do
-    %__MODULE__{}
+    make_array(@initial_capacity)
+  end
+
+  @spec make_array(pos_integer()) :: t()
+  defp make_array(capacity) do
+    %__MODULE__{
+      elements: :erlang.make_tuple(capacity, nil),
+      size: 0,
+      start: 0
+    }
   end
 
   @doc """
@@ -65,6 +76,15 @@ defmodule Array do
 
   """
   @spec push(t(element), element) :: t(element) when element: var
+  def push(array, element)
+
+  def push(array = %{elements: elements, size: size}, element)
+      when size == tuple_size(elements) do
+    array
+    |> Enum.into(make_array(size * 2))
+    |> push(element)
+  end
+
   def push(array, element) do
     position = element_position(array, array.size)
 
