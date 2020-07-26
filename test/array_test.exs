@@ -190,6 +190,43 @@ defmodule ArrayTest do
     end
   end
 
+  describe "Array.put/3" do
+    test "puts an element to an existing index" do
+      array =
+        [:a, :b, :d]
+        |> Array.new()
+        |> Array.put(2, :c)
+
+      assert Array.to_list(array) == [:a, :b, :c]
+    end
+
+    test "allows putting to a negative index" do
+      array =
+        [:b, :b, :c]
+        |> Array.new()
+        |> Array.put(-3, :a)
+
+      assert Array.to_list(array) == [:a, :b, :c]
+    end
+
+    test "does nothing if index out of bounds" do
+      array =
+        [:a, :b, :c]
+        |> Array.new()
+        |> Array.put(3, :d)
+
+      assert Array.to_list(array) == [:a, :b, :c]
+    end
+
+    test "raises ArgumentError for non-integer indices" do
+      array = Array.new([:a, :b, :c])
+
+      assert_raise ArgumentError, "array indices must be integers, got: %{}", fn ->
+        Array.put(array, %{}, :d)
+      end
+    end
+  end
+
   describe "Array.shift/1" do
     test "removes the first element from an array" do
       array = Array.new([:a, :b, :c])

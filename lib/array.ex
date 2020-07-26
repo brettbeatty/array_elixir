@@ -214,6 +214,35 @@ defmodule Array do
   end
 
   @doc """
+  Puts an element into an array at an index.
+
+  Does nothing if index is out of array bounds.
+
+  ## Examples
+
+      iex> array = Array.new([:a, :a, :c])
+      iex> Array.put(array, 1, :b)
+      #Array<[:a, :b, :c]>
+
+      iex> array = Array.new([:a, :b, :c])
+      iex> Array.put(array, 3, :d)
+      #Array<[:a, :b, :c]>
+
+  """
+  @spec put(t(element), integer(), element) :: t(element) when element: var
+  def put(array, index, element) do
+    case normalize_index(array, index) do
+      {:ok, index} ->
+        position = element_position(array, index)
+        elements = put_elem(array.elements, position, element)
+        %{array | elements: elements}
+
+      :error ->
+        array
+    end
+  end
+
+  @doc """
   Removes the first element from an array.
 
   Returns :error if array is empty.
