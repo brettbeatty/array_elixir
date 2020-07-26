@@ -26,4 +26,34 @@ defmodule Array do
   def new do
     %__MODULE__{}
   end
+
+  @doc """
+  Appends an element to an array.
+
+  ## Examples
+
+      iex> array = Array.new([:a, :b])
+      iex> Array.push(array, :c)
+      #Array<[:a, :b, :c]>
+
+  """
+  @spec push(t(element), element) :: t(element) when element: var
+  def push(array, element) do
+    position = element_position(array, array.size)
+
+    %{array | elements: put_elem(array.elements, position, element), size: array.size + 1}
+  end
+
+  @spec element_position(t(), integer()) :: non_neg_integer()
+  defp element_position(array, index) do
+    capacity = tuple_size(array.elements)
+
+    case rem(array.start + index, capacity) do
+      remainder when remainder >= 0 ->
+        remainder
+
+      remainder ->
+        remainder + capacity
+    end
+  end
 end
