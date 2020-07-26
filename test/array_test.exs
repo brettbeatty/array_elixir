@@ -2,6 +2,79 @@ defmodule ArrayTest do
   use ExUnit.Case, async: true
   doctest Array
 
+  describe "Array.delete/2" do
+    test "can delete from start of array" do
+      array =
+        ?a..?e
+        |> Array.new()
+        |> Array.delete(0)
+
+      assert Array.to_list(array) == 'bcde'
+    end
+
+    test "can delete from front half of array" do
+      array =
+        ?a..?e
+        |> Array.new()
+        |> Array.delete(1)
+
+      assert Array.to_list(array) == 'acde'
+    end
+
+    test "can delete from middle of array" do
+      array =
+        ?a..?e
+        |> Array.new()
+        |> Array.delete(2)
+
+      assert Array.to_list(array) == 'abde'
+    end
+
+    test "can delete from back half of array" do
+      array =
+        ?a..?e
+        |> Array.new()
+        |> Array.delete(3)
+
+      assert Array.to_list(array) == 'abce'
+    end
+
+    test "can delete from end of array" do
+      array =
+        ?a..?e
+        |> Array.new()
+        |> Array.delete(4)
+
+      assert Array.to_list(array) == 'abcd'
+    end
+
+    test "leaves array alone if index out of bounds" do
+      array =
+        ?a..?e
+        |> Array.new()
+        |> Array.delete(5)
+
+      assert Array.to_list(array) == 'abcde'
+    end
+
+    test "allows deleting from negative index" do
+      array =
+        ?a..?e
+        |> Array.new()
+        |> Array.delete(-2)
+
+      assert Array.to_list(array) == 'abce'
+    end
+
+    test "raises ArgumentError for non-integer indices" do
+      array = Array.new([:a, :b, :c])
+
+      assert_raise ArgumentError, "array indices must be integers, got: :b", fn ->
+        Array.delete(array, :b)
+      end
+    end
+  end
+
   describe "Array.fetch/2" do
     test "fetches an element by its index" do
       array = Array.new([:a, :b, :c])

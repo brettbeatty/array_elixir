@@ -15,6 +15,64 @@ defmodule Array do
 
   defstruct ~W[elements size start]a
 
+  @doc """
+  Deletes an element from an array by its index.
+
+  Does nothing if index is out of bounds.
+
+  ## Examples
+
+      iex> array = Array.new([:a, :b, :c])
+      iex> Array.delete(array, 1)
+      #Array<[:a, :c]>
+
+  """
+  @spec delete(t(element), integer()) :: t(element) when element: var
+  def delete(array, index) do
+    size = array.size
+
+    case normalize_index(array, index) do
+      {:ok, index} when index * 2 < size ->
+        shift_right(array, index - 1, element_position(array, index))
+
+      {:ok, index} ->
+        shift_left(array, index + 1, element_position(array, index))
+
+      :error ->
+        array
+    end
+  end
+
+  @spec shift_right(t(element), integer(), non_neg_integer()) :: t(element) when element: var
+  defp shift_right(array, index, prior_position)
+
+  defp shift_right(array, -1, _prior_position) do
+    %{array | size: array.size - 1, start: element_position(array, 1)}
+  end
+
+  defp shift_right(array, index, prior_position) do
+    position = element_position(array, index)
+    element = elem(array.elements, position)
+    elements = put_elem(array.elements, prior_position, element)
+
+    shift_right(%{array | elements: elements}, index - 1, position)
+  end
+
+  @spec shift_left(t(element), integer(), non_neg_integer()) :: t(element) when element: var
+  defp shift_left(array, index, prior_position)
+
+  defp shift_left(array = %{size: size}, size, _prior_position) do
+    %{array | size: size - 1}
+  end
+
+  defp shift_left(array, index, prior_position) do
+    position = element_position(array, index)
+    element = elem(array.elements, position)
+    elements = put_elem(array.elements, prior_position, element)
+
+    shift_left(%{array | elements: elements}, index + 1, position)
+  end
+
   @spec element_position(t(), integer()) :: non_neg_integer()
   defp element_position(array, index) do
     capacity = tuple_size(array.elements)
