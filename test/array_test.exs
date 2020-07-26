@@ -48,4 +48,18 @@ defmodule ArrayTest do
       assert Enum.into([:b, :c], array) == expected
     end
   end
+
+  describe "Enumerable" do
+    test "enumerates elements of an array" do
+      array = Array.new([:a, :b, :c])
+
+      assert Enum.to_list(array) == [:a, :b, :c]
+    end
+
+    test "accurately counts array elements" do
+      array = Array.new([:a, :b, :c])
+
+      assert Enum.count(array) == 3
+    end
+  end
 end
