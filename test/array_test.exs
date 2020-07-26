@@ -1,5 +1,6 @@
 defmodule ArrayTest do
   use ExUnit.Case, async: true
+  doctest Array
 
   describe "Array.new/0" do
     test "creates an empty array" do
