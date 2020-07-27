@@ -370,8 +370,20 @@ defmodule Array do
     end
 
     @impl Enumerable
-    def slice(_array) do
-      {:error, __MODULE__}
+    def slice(array) do
+      {:ok, array.size, &slice(&2, array, &1 + &2 - 1, [])}
+    end
+
+    @spec slice(non_neg_integer(), Array.t(element), non_neg_integer(), [element]) :: [element]
+          when element: var
+    defp slice(length, array, index, acc)
+
+    defp slice(0, _array, _index, acc) do
+      acc
+    end
+
+    defp slice(length, array, index, acc) do
+      slice(length - 1, array, index - 1, [array[index] | acc])
     end
   end
 

@@ -301,6 +301,12 @@ defmodule ArrayTest do
 
       assert Enum.count(array) == 3
     end
+
+    test "slices as expected" do
+      array = Array.new(?a..?z)
+
+      assert Enum.slice(array, 23..25) == 'xyz'
+    end
   end
 
   describe "Inspect" do
