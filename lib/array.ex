@@ -3,6 +3,14 @@ defmodule Array do
   Array is an implementation of arrays in Elixir.
 
   This module is meant as a learning exercise, not an optimized data structure.
+
+  ## Indices
+  Several functions in this module take an index. Array indices are integers
+  corresponding with an elements' positions within the array. Negative indices
+  count from the end of the array. Passing an index that is not an integer will
+  result in an ArgumentError. Out-of-bounds indices (less than the array size
+  negative or greater than or equal to the size of the array) do not correspond
+  with any elements and will behave accordingly.
   """
   @behaviour Access
 
@@ -91,10 +99,6 @@ defmodule Array do
   @doc """
   Fetches an element from an array by its index.
 
-  Array indices are integers. Fetching an index greater than or equal to the
-  array's size or less than the size negative will return `:error`. Negative
-  indices count from the end of the array.
-
   ## Examples
 
       iex> array = Array.new([:a, :b, :c])
@@ -116,25 +120,6 @@ defmodule Array do
       :error ->
         :error
     end
-  end
-
-  @spec normalize_index(t(), integer()) :: {:ok, non_neg_integer()} | :error
-  defp normalize_index(array, index)
-
-  defp normalize_index(_array, index) when not is_integer(index) do
-    raise ArgumentError, "array indices must be integers, got: #{inspect(index)}"
-  end
-
-  defp normalize_index(%{size: size}, index) when index >= -size and index < 0 do
-    {:ok, index + size}
-  end
-
-  defp normalize_index(%{size: size}, index) when index >= 0 and index < size do
-    {:ok, index}
-  end
-
-  defp normalize_index(_array, _index) do
-    :error
   end
 
   @doc """
@@ -199,6 +184,25 @@ defmodule Array do
   @spec new(Enumerable.t()) :: t()
   def new(enumerable) do
     Enum.into(enumerable, new())
+  end
+
+  @spec normalize_index(t(), integer()) :: {:ok, non_neg_integer()} | :error
+  defp normalize_index(array, index)
+
+  defp normalize_index(_array, index) when not is_integer(index) do
+    raise ArgumentError, "array indices must be integers, got: #{inspect(index)}"
+  end
+
+  defp normalize_index(%{size: size}, index) when index >= -size and index < 0 do
+    {:ok, index + size}
+  end
+
+  defp normalize_index(%{size: size}, index) when index >= 0 and index < size do
+    {:ok, index}
+  end
+
+  defp normalize_index(_array, _index) do
+    :error
   end
 
   @doc """
