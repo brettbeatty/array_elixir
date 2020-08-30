@@ -1,18 +1,22 @@
 defmodule Array do
   @moduledoc """
-  Documentation for `Array`.
+  Array is an implementation of arrays in Elixir.
+
+  This module is meant as a learning exercise, not an optimized data structure.
   """
 
-  @doc """
-  Hello world.
-
-  ## Examples
-
-      iex> Array.hello()
-      :world
-
+  @typedoc """
+  An array with elements of type `element`.
   """
-  def hello do
-    :world
-  end
+  @opaque t(element) :: %__MODULE__{
+            elements: {element} | tuple(),
+            size: non_neg_integer(),
+            start: non_neg_integer()
+          }
+  @typedoc """
+  An array with elements of any type.
+  """
+  @type t() :: t(any())
+
+  defstruct ~W[elements size start]a
 end
