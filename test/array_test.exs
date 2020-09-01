@@ -4,9 +4,9 @@ defmodule ArrayTest do
   describe "shift/1" do
     test "shifts the first element off an array" do
       array = %Array{elements: {:b, :a}, size: 2, start: 1}
-      expected_array = %Array{elements: {:b, :a}, size: 1, start: 0}
 
-      assert {:ok, :a, ^expected_array} = Array.shift(array)
+      assert {:ok, :a, new_array} = Array.shift(array)
+      assert Array.to_list(new_array) == [:b]
     end
 
     test "returns :error when shifting off an empty array" do
@@ -27,16 +27,16 @@ defmodule ArrayTest do
   describe "slice/3" do
     test "returns a slice of an array" do
       array = %Array{elements: {:a, :b, :c, :d}, size: 4, start: 3}
-      expected_array = %Array{elements: {:a, :b, :c, :d}, size: 2, start: 0}
+      array = Array.slice(array, 1, 2)
 
-      assert Array.slice(array, 1, 2) == expected_array
+      assert Array.to_list(array) == [:a, :b]
     end
 
     test "does not allow a slice past end of array" do
       array = %Array{elements: {:a, :b, :c, :d}, size: 4, start: 0}
-      expected_array = %Array{elements: {:a, :b, :c, :d}, size: 2, start: 2}
+      array = Array.slice(array, 2, 4)
 
-      assert Array.slice(array, 2, 4) == expected_array
+      assert Array.to_list(array) == [:c, :d]
     end
   end
 
