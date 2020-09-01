@@ -64,6 +64,21 @@ defmodule Array do
     {:ok, element, new_array}
   end
 
+  @doc """
+  Returns the size of an array.
+
+  ## Examples
+
+      iex> array = Array.new([:a, :b, :c])
+      iex> Array.size(array)
+      3
+
+  """
+  @spec size(array :: t()) :: non_neg_integer()
+  def size(array) do
+    array.size
+  end
+
   defimpl Enumerable do
     @impl Enumerable
     def count(_array) do

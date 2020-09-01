@@ -16,6 +16,14 @@ defmodule ArrayTest do
     end
   end
 
+  describe "size/1" do
+    test "returns the size of the array" do
+      array = %Array{elements: {?a, ?b, ?c, ?d}, size: 2, start: 1}
+
+      assert Array.size(array) == 2
+    end
+  end
+
   describe "Enumerable" do
     test "passes everything appropriately to reducer" do
       array = %Array{elements: {?c, ?d, ?a, ?b}, size: 3, start: 2}
