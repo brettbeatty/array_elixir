@@ -25,6 +25,12 @@ defmodule ArrayTest do
   end
 
   describe "Enumerable" do
+    test "count is accurate" do
+      array = %Array{elements: {nil, nil, nil, nil}, size: 1, start: 0}
+
+      assert Enum.count(array) == 1
+    end
+
     test "passes everything appropriately to reducer" do
       array = %Array{elements: {?c, ?d, ?a, ?b}, size: 3, start: 2}
 

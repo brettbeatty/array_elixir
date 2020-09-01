@@ -81,8 +81,8 @@ defmodule Array do
 
   defimpl Enumerable do
     @impl Enumerable
-    def count(_array) do
-      {:error, __MODULE__}
+    def count(array) do
+      {:ok, Array.size(array)}
     end
 
     @impl Enumerable
