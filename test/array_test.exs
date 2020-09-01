@@ -24,6 +24,22 @@ defmodule ArrayTest do
     end
   end
 
+  describe "slice/3" do
+    test "returns a slice of an array" do
+      array = %Array{elements: {:a, :b, :c, :d}, size: 4, start: 3}
+      expected_array = %Array{elements: {:a, :b, :c, :d}, size: 2, start: 0}
+
+      assert Array.slice(array, 1, 2) == expected_array
+    end
+
+    test "does not allow a slice past end of array" do
+      array = %Array{elements: {:a, :b, :c, :d}, size: 4, start: 0}
+      expected_array = %Array{elements: {:a, :b, :c, :d}, size: 2, start: 2}
+
+      assert Array.slice(array, 2, 4) == expected_array
+    end
+  end
+
   describe "Enumerable" do
     test "count is accurate" do
       array = %Array{elements: {nil, nil, nil, nil}, size: 1, start: 0}

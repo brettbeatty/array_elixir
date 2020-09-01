@@ -79,6 +79,27 @@ defmodule Array do
     array.size
   end
 
+  @doc """
+  Slices an array with `size` elements from the old array starting at `index`.
+
+  ## Examples
+
+      iex> array = Array.new([:y, :z, :a, :b, :c, :d])
+      iex> Array.slice(array, 2, 3)
+      #Array<[:a, :b, :c]>
+
+      iex> array = Array.new([:z, :a, :b, :c])
+      iex> Array.slice(array, 1, 7)
+      #Array<[:a, :b, :c]>
+
+  """
+  @spec slice(array :: t(element), start :: non_neg_integer(), size :: non_neg_integer()) ::
+          t(element)
+        when element: var
+  def slice(array, start, size) do
+    %{array | start: element_position(array, start), size: min(size, array.size - start)}
+  end
+
   defimpl Enumerable do
     @impl Enumerable
     def count(array) do
