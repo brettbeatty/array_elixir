@@ -40,6 +40,14 @@ defmodule ArrayTest do
     end
   end
 
+  describe "to_list/1" do
+    test "converts an array to a list" do
+      array = %Array{elements: {?a, ?b, ?c, ?d}, size: 3, start: 1}
+
+      assert Array.to_list(array) == 'bcd'
+    end
+  end
+
   describe "Enumerable" do
     test "count is accurate" do
       array = %Array{elements: {nil, nil, nil, nil}, size: 1, start: 0}

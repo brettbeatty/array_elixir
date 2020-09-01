@@ -100,6 +100,21 @@ defmodule Array do
     %{array | start: element_position(array, start), size: min(size, array.size - start)}
   end
 
+  @doc """
+  Converts an array to a list.
+
+  ## Examples
+
+      iex> array = Array.new([:a, :b, :c])
+      iex> Array.to_list(array)
+      [:a, :b, :c]
+
+  """
+  @spec to_list(array :: t(element)) :: [element] when element: var
+  def to_list(array) do
+    Enum.to_list(array)
+  end
+
   defimpl Enumerable do
     @impl Enumerable
     def count(array) do
