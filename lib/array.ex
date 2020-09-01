@@ -63,4 +63,42 @@ defmodule Array do
 
     {:ok, element, new_array}
   end
+
+  defimpl Enumerable do
+    @impl Enumerable
+    def count(_array) do
+      {:error, __MODULE__}
+    end
+
+    @impl Enumerable
+    def member?(_array, _element) do
+      {:error, __MODULE__}
+    end
+
+    @impl Enumerable
+    def reduce(array, acc, fun)
+
+    def reduce(array, {:cont, acc}, fun) do
+      case Array.shift(array) do
+        {:ok, element, new_array} ->
+          reduce(new_array, fun.(element, acc), fun)
+
+        :error ->
+          {:done, acc}
+      end
+    end
+
+    def reduce(_array, {:halt, acc}, _fun) do
+      {:halted, acc}
+    end
+
+    def reduce(array, {:suspend, acc}, fun) do
+      {:suspended, acc, &reduce(array, &1, fun)}
+    end
+
+    @impl Enumerable
+    def slice(_array) do
+      {:error, __MODULE__}
+    end
+  end
 end

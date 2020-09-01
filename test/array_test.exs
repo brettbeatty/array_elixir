@@ -15,4 +15,18 @@ defmodule ArrayTest do
       assert Array.shift(array) == :error
     end
   end
+
+  describe "Enumerable" do
+    test "passes everything appropriately to reducer" do
+      array = %Array{elements: {?c, ?d, ?a, ?b}, size: 3, start: 2}
+
+      assert Enum.map(array, &(&1 + 4)) == 'efg'
+    end
+
+    test "halts early just fine" do
+      array = %Array{elements: {?w, ?x, ?y, ?z}, size: 4, start: 0}
+
+      assert Enum.take(array, 2) == 'wx'
+    end
+  end
 end
