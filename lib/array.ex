@@ -148,8 +148,8 @@ defmodule Array do
     end
 
     @impl Enumerable
-    def slice(_array) do
-      {:error, __MODULE__}
+    def slice(array) do
+      {:ok, Array.size(array), &Array.to_list(Array.slice(array, &1, &2))}
     end
   end
 end

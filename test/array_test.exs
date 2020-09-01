@@ -66,5 +66,11 @@ defmodule ArrayTest do
 
       assert Enum.take(array, 2) == 'wx'
     end
+
+    test "slices work as expected" do
+      array = %Array{elements: {?a, ?b, ?c, ?d}, size: 4, start: 2}
+
+      assert Enum.slice(array, 1, 2) == 'da'
+    end
   end
 end
