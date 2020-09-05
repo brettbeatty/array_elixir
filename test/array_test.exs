@@ -67,6 +67,12 @@ defmodule ArrayTest do
       assert Enum.take(array, 2) == 'wx'
     end
 
+    test "suspends and resumes" do
+      array = %Array{elements: {:b, :c, :d, :a}, size: 3, start: 3}
+
+      assert Enum.zip(array, 1..3) == [a: 1, b: 2, c: 3]
+    end
+
     test "slices work as expected" do
       array = %Array{elements: {?a, ?b, ?c, ?d}, size: 4, start: 2}
 
