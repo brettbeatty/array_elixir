@@ -132,6 +132,25 @@ defmodule Array do
     Enum.to_list(array)
   end
 
+  defimpl Collectable do
+    @impl Collectable
+    def into(array) do
+      {array, &collect/2}
+    end
+
+    @spec collect(array :: Array.t(element), command :: Collectable.command()) :: Array.t(element)
+          when element: var
+    defp collect(array, command)
+
+    defp collect(array, {:cont, element}) do
+      Array.push(array, element)
+    end
+
+    defp collect(array, command) when command in [:done, :halt] do
+      array
+    end
+  end
+
   defimpl Enumerable do
     @impl Enumerable
     def count(array) do

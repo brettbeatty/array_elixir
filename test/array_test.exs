@@ -57,6 +57,15 @@ defmodule ArrayTest do
     end
   end
 
+  describe "Collectable" do
+    test "collects elements into an array" do
+      array = %Array{elements: {:a, nil, nil, nil}, size: 1, start: 0}
+      new_array = Enum.into([:b, :c], array)
+
+      assert Array.to_list(new_array) == [:a, :b, :c]
+    end
+  end
+
   describe "Enumerable" do
     test "count is accurate" do
       array = %Array{elements: {nil, nil, nil, nil}, size: 1, start: 0}
