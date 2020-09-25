@@ -1,6 +1,15 @@
 defmodule ArrayTest do
   use ExUnit.Case, async: true
 
+  describe "push/2" do
+    test "appends an element to an array" do
+      array = %Array{elements: {nil, nil, :a, :b}, size: 2, start: 2}
+      array = Array.push(array, :c)
+
+      assert Array.to_list(array) == [:a, :b, :c]
+    end
+  end
+
   describe "shift/1" do
     test "shifts the first element off an array" do
       array = %Array{elements: {:b, :a}, size: 2, start: 1}

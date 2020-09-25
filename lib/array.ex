@@ -34,6 +34,23 @@ defmodule Array do
   end
 
   @doc """
+  Pushes an element to the end of an array.
+
+  ## Examples
+
+      iex> array = Array.new([:a, :b])
+      iex> Array.push(array, :c)
+      #Array<[:a, :b, :c]>
+
+  """
+  @spec push(array :: t(element), element :: element) :: t(element) when element: var
+  def push(array, element) do
+    position = element_position(array, array.size)
+
+    %{array | elements: put_elem(array.elements, position, element), size: array.size + 1}
+  end
+
+  @doc """
   Shifts the first element from an array, returning it and the updated array.
 
   Returns :error if array is empty.
