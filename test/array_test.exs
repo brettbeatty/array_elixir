@@ -24,6 +24,18 @@ defmodule ArrayTest do
 
       assert Array.to_list(array) == [:a, :b, :c]
     end
+
+    test "scales up arrays at capacity" do
+      capacity = tuple_size(Array.new().elements)
+
+      array =
+        0
+        |> Range.new(capacity - 1)
+        |> Array.new()
+        |> Array.push(capacity)
+
+      assert Array.to_list(array) == Enum.to_list(0..capacity)
+    end
   end
 
   describe "shift/1" do

@@ -83,6 +83,15 @@ defmodule Array do
 
   """
   @spec push(array :: t(element), element :: element) :: t(element) when element: var
+  def push(array, element)
+
+  def push(array = %{elements: elements, size: size}, element)
+      when size == tuple_size(elements) do
+    array
+    |> Enum.into(make_array(size * 2))
+    |> push(element)
+  end
+
   def push(array, element) do
     position = element_position(array, array.size)
 
