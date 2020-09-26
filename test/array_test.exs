@@ -1,6 +1,22 @@
 defmodule ArrayTest do
   use ExUnit.Case, async: true
 
+  describe "new/0" do
+    test "creates an empty array" do
+      array = Array.new()
+
+      assert Array.to_list(array) == []
+    end
+  end
+
+  describe "new/1" do
+    test "creates an array from an enumerable" do
+      array = Array.new([:a, :b, :c])
+
+      assert Array.to_list(array) == [:a, :b, :c]
+    end
+  end
+
   describe "push/2" do
     test "appends an element to an array" do
       array = %Array{elements: {nil, nil, :a, :b}, size: 2, start: 2}

@@ -20,6 +20,8 @@ defmodule Array do
 
   defstruct ~W[elements size start]a
 
+  @initial_capacity 8
+
   @spec element_position(t(), integer()) :: non_neg_integer()
   defp element_position(array, index) do
     capacity = tuple_size(array.elements)
@@ -31,6 +33,43 @@ defmodule Array do
       remainder ->
         remainder + capacity
     end
+  end
+
+  @doc """
+  Creates an empty array.
+
+  ## Examples
+
+      iex> Array.new()
+      #Array<[]>
+
+  """
+  @spec new() :: t()
+  def new do
+    make_array(@initial_capacity)
+  end
+
+  @spec make_array(capacity :: non_neg_integer()) :: t()
+  defp make_array(capacity) do
+    %__MODULE__{
+      elements: :erlang.make_tuple(capacity, nil),
+      size: 0,
+      start: 0
+    }
+  end
+
+  @doc """
+  Creates an array from an enumerable.
+
+  ## Examples
+
+      iex> Array.new([:a, :b, :c])
+      #Array<[:a, :b, :c]>
+
+  """
+  @spec new(enumerable :: Enumerable.t()) :: t()
+  def new(enumerable) do
+    Enum.into(enumerable, new())
   end
 
   @doc """
