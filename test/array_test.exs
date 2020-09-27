@@ -19,7 +19,7 @@ defmodule ArrayTest do
 
   describe "push/2" do
     test "appends an element to an array" do
-      array = %Array{elements: {nil, nil, :a, :b}, size: 2, start: 2}
+      array = Array.new([:a, :b])
       array = Array.push(array, :c)
 
       assert Array.to_list(array) == [:a, :b, :c]
@@ -40,14 +40,14 @@ defmodule ArrayTest do
 
   describe "shift/1" do
     test "shifts the first element off an array" do
-      array = %Array{elements: {:b, :a}, size: 2, start: 1}
+      array = Array.new([:a, :b])
 
       assert {:ok, :a, new_array} = Array.shift(array)
       assert Array.to_list(new_array) == [:b]
     end
 
     test "returns :error when shifting off an empty array" do
-      array = %Array{elements: {nil, nil}, size: 0, start: 0}
+      array = Array.new()
 
       assert Array.shift(array) == :error
     end
@@ -55,7 +55,7 @@ defmodule ArrayTest do
 
   describe "size/1" do
     test "returns the size of the array" do
-      array = %Array{elements: {?a, ?b, ?c, ?d}, size: 2, start: 1}
+      array = Array.new([:a, :b])
 
       assert Array.size(array) == 2
     end
@@ -63,14 +63,14 @@ defmodule ArrayTest do
 
   describe "slice/3" do
     test "returns a slice of an array" do
-      array = %Array{elements: {:a, :b, :c, :d}, size: 4, start: 3}
+      array = Array.new([:d, :a, :b, :c])
       array = Array.slice(array, 1, 2)
 
       assert Array.to_list(array) == [:a, :b]
     end
 
     test "does not allow a slice past end of array" do
-      array = %Array{elements: {:a, :b, :c, :d}, size: 4, start: 0}
+      array = Array.new([:a, :b, :c, :d])
       array = Array.slice(array, 2, 4)
 
       assert Array.to_list(array) == [:c, :d]
@@ -79,7 +79,7 @@ defmodule ArrayTest do
 
   describe "to_list/1" do
     test "converts an array to a list" do
-      array = %Array{elements: {?a, ?b, ?c, ?d}, size: 3, start: 1}
+      array = Array.new('bcd')
 
       assert Array.to_list(array) == 'bcd'
     end
@@ -87,7 +87,7 @@ defmodule ArrayTest do
 
   describe "Collectable" do
     test "collects elements into an array" do
-      array = %Array{elements: {:a, nil, nil, nil}, size: 1, start: 0}
+      array = Array.new([:a])
       new_array = Enum.into([:b, :c], array)
 
       assert Array.to_list(new_array) == [:a, :b, :c]
@@ -96,31 +96,31 @@ defmodule ArrayTest do
 
   describe "Enumerable" do
     test "count is accurate" do
-      array = %Array{elements: {nil, nil, nil, nil}, size: 1, start: 0}
+      array = Array.new([nil])
 
       assert Enum.count(array) == 1
     end
 
     test "passes everything appropriately to reducer" do
-      array = %Array{elements: {?c, ?d, ?a, ?b}, size: 3, start: 2}
+      array = Array.new('abc')
 
       assert Enum.map(array, &(&1 + 4)) == 'efg'
     end
 
     test "halts early just fine" do
-      array = %Array{elements: {?w, ?x, ?y, ?z}, size: 4, start: 0}
+      array = Array.new('wxyz')
 
       assert Enum.take(array, 2) == 'wx'
     end
 
     test "suspends and resumes" do
-      array = %Array{elements: {:b, :c, :d, :a}, size: 3, start: 3}
+      array = Array.new([:a, :b, :c])
 
       assert Enum.zip(array, 1..3) == [a: 1, b: 2, c: 3]
     end
 
     test "slices work as expected" do
-      array = %Array{elements: {?a, ?b, ?c, ?d}, size: 4, start: 2}
+      array = Array.new('cdab')
 
       assert Enum.slice(array, 1, 2) == 'da'
     end
